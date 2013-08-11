@@ -2,7 +2,7 @@ from application.config import Config
 from urllib2 import URLError, HTTPError
 import urllib2
 import simplejson
-class NotFound():
+class NotFound(BaseException):
     pass
 
 def make_url(host, function, parameter):
