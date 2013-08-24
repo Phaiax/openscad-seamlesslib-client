@@ -1,4 +1,4 @@
-from application import compiled_filename_extension, scad_extension
+from seamlessclient import compiled_filename_extension, scad_extension
 
 def get_filename_for_compiled_file(scadfilename):
     if has_scad_extension(scadfilename) and not is_compiled_file(scadfilename):

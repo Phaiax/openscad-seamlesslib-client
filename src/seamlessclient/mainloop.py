@@ -1,9 +1,9 @@
 from Queue import Empty
-from application.compiler import Compiler
-from application.config import Config
-from application.filenames import get_filename_for_compiled_file
-from application.filesystemwatcher import Watcher
-from application.webfetch import make_user_url
+from seamlessclient.compiler import Compiler
+from seamlessclient.config import Config
+from seamlessclient.filenames import get_filename_for_compiled_file
+from seamlessclient.filesystemwatcher import Watcher
+from seamlessclient.webfetch import make_user_url
 import Queue
 import hashlib
 import os

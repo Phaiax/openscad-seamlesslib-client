@@ -1,5 +1,5 @@
-from application.commandline import run
-import application
+from seamlessclient.commandline import run
+import seamlessclient
 from mock import patch
 import unittest
 
@@ -27,7 +27,7 @@ class CommandlineTests(unittest.TestCase):
         run(['--help'])
         self.assertTrue('usage' in prints[0])
         
-    @patch('application.mainloop.instance.start_watch')
+    @patch('seamlessclient.mainloop.instance.start_watch')
     def test_starts_programm(self, start_watch):
         run(['./watchpath/'])
         start_watch.assert_called_once_with('./watchpath/')

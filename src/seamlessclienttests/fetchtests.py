@@ -1,5 +1,5 @@
 import unittest
-from application import webfetch
+from seamlessclient import webfetch
 
 class FetchTests(unittest.TestCase):
     def test_request_fails_with_invalid_name(self):

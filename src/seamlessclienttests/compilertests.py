@@ -1,6 +1,6 @@
 import unittest
-import application
-from application.compiler import Compiler
+import seamlessclient
+from seamlessclient.compiler import Compiler
 from mock import patch, Mock, call
 
 test_input = """
@@ -48,14 +48,14 @@ class CompilerTests(unittest.TestCase):
         matches, functions = c.find_calls_to_methods_on_seamless_server()
         self.assertEqual(functions, ["~circle-v10", "~arduino-v1"])
     
-    @patch('application.compiler.get_by_uniquename')
+    @patch('seamlessclient.compiler.get_by_uniquename')
     def test_compiler_gets_functions(self, get_by_uniquename_mock):
         get_by_uniquename_mock.side_effect = [server_answer_circle, server_answer_arduino]
         Compiler().compile(test_input)
         get_by_uniquename_mock.assert_has_calls([ call("~circle-v10"), call("~arduino-v1")])
         self.assertEqual(2, get_by_uniquename_mock.call_count)
         
-    @patch('application.compiler.Compiler.generate_five_random_chars')
+    @patch('seamlessclient.compiler.Compiler.generate_five_random_chars')
     def test_randomized_names_generation(self, random_mock):
         random_mock.return_value = "abcde"
         c = Compiler()
@@ -93,13 +93,13 @@ class CompilerTests(unittest.TestCase):
         self.assertNotEqual(r, r2)
         self.assertEqual(5, len(r))
 
-    @patch('application.compiler.Compiler.generate_five_random_chars')
+    @patch('seamlessclient.compiler.Compiler.generate_five_random_chars')
     def test_randomize_module_name(self, generate_five_random_chars_mock):
         generate_five_random_chars_mock.return_value = "abcde"
         self.assertEqual("circle-v1-abcde", Compiler().randomize_module_name("circle-v1"))
         
-    @patch('application.compiler.Compiler.generate_five_random_chars')
-    @patch('application.compiler.get_by_uniquename')
+    @patch('seamlessclient.compiler.Compiler.generate_five_random_chars')
+    @patch('seamlessclient.compiler.get_by_uniquename')
     def test_compiler_inserts_functions_to_end_of_file_and_strips_tilde(self, get_by_uniquename_mock, random_mock):
         get_by_uniquename_mock.side_effect = [server_answer_circle, server_answer_arduino]
         random_mock.return_value = "abcde"
@@ -107,8 +107,8 @@ class CompilerTests(unittest.TestCase):
         self.assertIn("module arduino-v1-abcde(screws)", result)
         self.assertIn("module circle-v10-abcde(", result)
         
-    @patch('application.compiler.Compiler.generate_five_random_chars')
-    @patch('application.compiler.get_by_uniquename')
+    @patch('seamlessclient.compiler.Compiler.generate_five_random_chars')
+    @patch('seamlessclient.compiler.get_by_uniquename')
     def test_compiler_replaces_uniquename_in_module_calls_with_randomized_name(self, get_by_uniquename_mock, random_mock):
         get_by_uniquename_mock.side_effect = [server_answer_circle, server_answer_arduino]
         random_mock.return_value = "abcde"

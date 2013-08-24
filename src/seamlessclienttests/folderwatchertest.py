@@ -2,9 +2,9 @@ import unittest
 import os
 import shutil
 import time
-from application.filesystemwatcher import Watcher
+from seamlessclient.filesystemwatcher import Watcher
 from mock import MagicMock, call
-from application import compiled_filename_extension, scad_extension, test_path
+from seamlessclient import compiled_filename_extension, scad_extension, test_path
 
 class FolderWatcherTests(unittest.TestCase):
 

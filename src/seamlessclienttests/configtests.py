@@ -1,6 +1,6 @@
 import unittest
-from application.config import Config
-import application
+from seamlessclient.config import Config
+import seamlessclient
 
 class ConfigTests(unittest.TestCase):
     def test_can_save_value(self):
@@ -17,7 +17,7 @@ class ConfigTests(unittest.TestCase):
 
     def test_get_default_server(self):
         Config().clear()
-        self.assertEqual(Config().get_server(), application.default_servers[0])
+        self.assertEqual(Config().get_server(), seamlessclient.default_servers[0])
         
     def test_can_set_server(self):
         Config().clear()

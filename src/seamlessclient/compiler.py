@@ -1,5 +1,5 @@
-from application.cachedfetch import get_by_uniquename
-from application.webfetch import NotFound
+from seamlessclient.cachedfetch import get_by_uniquename
+from seamlessclient.webfetch import NotFound
 import re
 import uuid
 

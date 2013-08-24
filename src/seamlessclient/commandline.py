@@ -1,4 +1,4 @@
-from application import mainloop
+from seamlessclient import mainloop
 import argparse
 import time
 

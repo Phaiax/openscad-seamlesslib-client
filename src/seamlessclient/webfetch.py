@@ -1,4 +1,4 @@
-from application.config import Config
+from seamlessclient.config import Config
 from urllib2 import URLError, HTTPError
 import urllib2
 import simplejson

@@ -1,7 +1,7 @@
 
 import unittest
-from application.filenames import get_filename_for_compiled_file, has_scad_extension, is_compiled_file, NotAScadFile
-from application import compiled_filename_extension, scad_extension
+from seamlessclient.filenames import get_filename_for_compiled_file, has_scad_extension, is_compiled_file, NotAScadFile
+from seamlessclient import compiled_filename_extension, scad_extension
 
 class FilenamesTest(unittest.TestCase):
 

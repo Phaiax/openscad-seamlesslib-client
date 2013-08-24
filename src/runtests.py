@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from tests import *
+from seamlessclienttests import *
 import unittest
 
 

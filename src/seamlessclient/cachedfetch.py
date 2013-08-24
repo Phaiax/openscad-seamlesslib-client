@@ -1,7 +1,7 @@
 
-from application.config import Config
-from application.webfetch import NotFound
-from application import webfetch
+from seamlessclient.config import Config
+from seamlessclient.webfetch import NotFound
+from seamlessclient import webfetch
 
 def get_by_uniquename(uniquename):
     try:

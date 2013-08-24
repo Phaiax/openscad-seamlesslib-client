@@ -1,6 +1,6 @@
 import wx
 import simplejson
-from application import get_config_path, default_servers
+from seamlessclient import get_config_path, default_servers
 
 class Config(object):
     _instance = None

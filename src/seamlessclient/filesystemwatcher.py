@@ -1,7 +1,7 @@
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import os
-from application.filenames import get_filename_for_compiled_file, has_scad_extension, is_compiled_file, NotAScadFile
+from seamlessclient.filenames import get_filename_for_compiled_file, has_scad_extension, is_compiled_file, NotAScadFile
 
 
 class Watcher(FileSystemEventHandler):

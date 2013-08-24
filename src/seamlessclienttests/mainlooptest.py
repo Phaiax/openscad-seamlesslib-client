@@ -1,9 +1,9 @@
-from application import compiled_filename_extension, scad_extension, test_path, \
+from seamlessclient import compiled_filename_extension, scad_extension, test_path, \
     mainloop
-from application.compiler import Compiler
-from application.filenames import get_filename_for_compiled_file
+from seamlessclient.compiler import Compiler
+from seamlessclient.filenames import get_filename_for_compiled_file
 from mock import patch
-from tests.compilertests import test_input, server_answer_arduino, \
+from seamlessclienttests.compilertests import test_input, server_answer_arduino, \
     server_answer_circle
 import os
 import shutil
@@ -39,8 +39,8 @@ class MainLoopTests(unittest.TestCase):
   
     
     
-    @patch('application.compiler.Compiler.generate_five_random_chars')
-    @patch('application.compiler.get_by_uniquename')
+    @patch('seamlessclient.compiler.Compiler.generate_five_random_chars')
+    @patch('seamlessclient.compiler.get_by_uniquename')
     def test_compile_file_on_filesystem(self, get_by_uniquename_mock, random_mock):
         if MainLoopTests.ignore_this_testcase:
             return
@@ -64,9 +64,9 @@ class MainLoopTests(unittest.TestCase):
         self.assertEqual(output_compare, output_fromfile)
         self.assertTrue(os.path.isfile(get_filename_for_compiled_file(path)))
     
-    @patch('application.mainloop.instance.should_compile')
-    @patch('application.mainloop.instance.start_compiler_runner')
-    @patch('application.mainloop.Watcher')
+    @patch('seamlessclient.mainloop.instance.should_compile')
+    @patch('seamlessclient.mainloop.instance.start_compiler_runner')
+    @patch('seamlessclient.mainloop.Watcher')
     def test_start_watch_starts_watch_and_fills_queue(self, watcher, start_compiler_runner, should_compile):
         should_compile.return_value = True
         mainloop.instance.start_watch('/abcdefghi/jklmno')
@@ -85,9 +85,9 @@ class MainLoopTests(unittest.TestCase):
         
         self.assertTrue(start_compiler_runner.called)
         
-    @patch('application.mainloop.instance.start_compiler_runner')
-    @patch('application.mainloop.Watcher')
-    @patch('application.mainloop.instance.w')
+    @patch('seamlessclient.mainloop.instance.start_compiler_runner')
+    @patch('seamlessclient.mainloop.Watcher')
+    @patch('seamlessclient.mainloop.instance.w')
     def test_start_watch_kills_watch_if_existent(self, w, Watcher, compiler_runner):
         mainloop.instance.start_watch('/abcdefghi/jklmno')
 
@@ -99,7 +99,7 @@ class MainLoopTests(unittest.TestCase):
         mainloop.instance.start_compiler_runner()
         self.assertTrue(mainloop.instance.compiler_thread is None)
         
-    @patch('application.mainloop.instance.compile_file')
+    @patch('seamlessclient.mainloop.instance.compile_file')
     def test_new_thread_calls_compiler_for_each_queue_item(self, compile_file):
         this_thread = threading.current_thread()
         other_thread = []
@@ -119,8 +119,8 @@ class MainLoopTests(unittest.TestCase):
         self.assertEqual(len(other_thread), 2)
 
     
-    @patch('application.mainloop.instance.w')
-    @patch('application.mainloop.instance.compiler_thread')
+    @patch('seamlessclient.mainloop.instance.w')
+    @patch('seamlessclient.mainloop.instance.compiler_thread')
     def test_stop_mainloop_stops_both_threads(self, compiler_thread, w):
         mainloop.instance.compiler_thread_is_running = True
         mainloop.instance.stop_watch()
@@ -128,8 +128,8 @@ class MainLoopTests(unittest.TestCase):
         self.assertTrue(compiler_thread.join.called)
         
         
-    @patch('application.mainloop.instance.start_compiler_runner')
-    @patch('application.mainloop.instance.should_compile')
+    @patch('seamlessclient.mainloop.instance.start_compiler_runner')
+    @patch('seamlessclient.mainloop.instance.should_compile')
     def test_files_go_through_decider(self, should_compile, start_compiler_runner):
         should_compile.return_value = False
         mainloop.file_changed_handler("file.scad", True)
@@ -151,7 +151,7 @@ class MainLoopTests(unittest.TestCase):
         self.assertEqual("40bd001563085fc35165329ea1ff5c5ecbdbbeef", sha1)
         # echo -n 123 | sha1sum
     
-    @patch('application.mainloop.instance.get_checksum')
+    @patch('seamlessclient.mainloop.instance.get_checksum')
     def test_decide_compilation(self, get_checksum):
         # Never seen, never compiled
         get_checksum.side_effect = ['v1', 'v1']

@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
-import application.commandline
+import seamlessclient.commandline
 from sys import argv
 
 
 if __name__ == '__main__':
-    application.commandline.run(argv[1:], True)
+    seamlessclient.commandline.run(argv[1:], True)

@@ -1,6 +1,6 @@
 import unittest
-from application.config import Config
-from application import cachedfetch
+from seamlessclient.config import Config
+from seamlessclient import cachedfetch
 import mock
 
 class CachedFetchTests(unittest.TestCase):
