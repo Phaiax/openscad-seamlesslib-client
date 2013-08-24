@@ -3,7 +3,7 @@ from application.config import Config
 from application import cachedfetch
 import mock
 
-class ConfigTests(unittest.TestCase):
+class CachedFetchTests(unittest.TestCase):
     
     
     def test_uses_cache(self):

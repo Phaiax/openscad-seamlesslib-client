@@ -5,14 +5,21 @@ import simplejson
 class NotFound(BaseException):
     pass
 
-def make_url(host, function, parameter):
+def make_correct_host(host):
     url = host
     if not url.startswith("http://"):
         url = "http://" + url
     if not url.endswith("/"):
         url = url + "/"
-    url = url + "api/" + function + "/" + parameter + "/"
     return url
+
+
+def make_url(host, function, parameter):
+    return make_correct_host(host) + "api/" + function + "/" + parameter + "/"
+
+def make_user_url(host, uuid):
+    return make_correct_host(host) + "show/" + uuid + "/"
+
 
 def get_by_uniquename(uniquename):
     try:
@@ -21,8 +28,8 @@ def get_by_uniquename(uniquename):
         json = response.read()
         return simplejson.loads(json, encoding="UTF-8")
     except HTTPError as e:
-        print 'The server couldn\'t fulfill the request.'
-        print 'Error code: ', e.code
+        #print 'The server couldn\'t fulfill the request.'
+        #print 'Error code: ', e.code
         raise NotFound()
     except URLError as e:
         print 'We failed to reach a server.'

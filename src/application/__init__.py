@@ -9,6 +9,10 @@ config_files = {'Linux' : "$HOME/.config/seamless-compiler.config",
 
 default_servers = ['localhost:8000']
 
+compiled_filename_extension = ".compiled.scad"
+scad_extension = ".scad"
+test_path = os.path.join(os.getcwd(), "folderwatchtestdirectory")
+
 def get_os():
     return platform.system()
 
