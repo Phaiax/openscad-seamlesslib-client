@@ -1,8 +1,13 @@
 #!/usr/bin/python
 
-import seamlessclient.gui
+from sys import argv
 
 
 if __name__ == '__main__':
-    seamlessclient.gui.run()
+    if len(argv) > 1:
+        import seamlessclient.commandline
+        seamlessclient.commandline.run(argv[1:], True)
+    else:
+        import seamlessclient.gui
+        seamlessclient.gui.run()
     
