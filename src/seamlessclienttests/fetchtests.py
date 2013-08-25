@@ -7,13 +7,13 @@ class FetchTests(unittest.TestCase):
      
     def test_raw_request_returns_jsonable_object(self):
         test1 = webfetch.get_by_uniquename("~px-test-v1")
-        self.assertEqual(test1['guid'], "f90016f9-fc2c-4bf1-9e93-223a3bce0857")
+        self.assertEqual(test1['guid'], "c8e0fe1e-1f24-4791-9b0c-863326b812e1")
         self.assertEqual(test1['modulename'], "test")
-        self.assertEqual(test1['description'], "Desc")
-        self.assertEqual(test1['sourcecode'], "module test(")
-        self.assertEqual(test1['documentation'], "Dok")
+        self.assertEqual(test1['description'], "Empty Module")
+        self.assertEqual(test1['sourcecode'], "module test() {}")
+        self.assertEqual(test1['documentation'], "-")
         self.assertEqual(test1['uniquename'], "~px-test-v1")
-        self.assertEqual(test1['title'], "LatestMod")
+        self.assertEqual(test1['title'], "Test for Compiler Tests")
         self.assertEqual(test1['version'], 1)
     
     def test_url_generation(self):

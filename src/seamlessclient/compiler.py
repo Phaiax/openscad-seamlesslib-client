@@ -5,7 +5,7 @@ import uuid
 
 class Compiler(object):
     def __init__(self):
-        self.seamless_call_regex = re.compile(r"(?P<uniquename>~[a-zA-Z0-9\-]*)\s*\(")
+        self.seamless_call_regex = re.compile(r"(?P<uniquename>~[a-zA-Z0-9\-_]*)\s*\(")
     
     def compile(self, input):
         self.input = input
@@ -31,6 +31,7 @@ class Compiler(object):
     def generate_all_randomized_module_names(self):
         for module in self.modules.values():
             module['randomized_method_name'] = self.randomize_module_name(module['uniquename'][1:])
+            module['randomized_method_name'] = module['randomized_method_name'].replace('-', '_')
     
     
     def find_calls_to_methods_on_seamless_server(self):
@@ -56,7 +57,7 @@ class Compiler(object):
         return uuid.uuid4().__str__()[0:5]    
     
     def randomize_module_name(self, module_name):
-        return "%s-%s" % (module_name, self.generate_five_random_chars())
+        return "%s_%s" % (module_name, self.generate_five_random_chars())
 
     def generate_complete_sourcecode_appendix(self):
         sourcecodes = [self.replace_modulename(mod['randomized_method_name'], mod['modulename'], 

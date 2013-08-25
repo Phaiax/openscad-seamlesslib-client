@@ -62,8 +62,8 @@ class CompilerTests(unittest.TestCase):
         c.modules = {"~arduino-v1" : server_answer_arduino,
                      "~circle-v10" : server_answer_circle }
         c.generate_all_randomized_module_names()
-        self.assertEqual("arduino-v1-abcde", c.modules['~arduino-v1']['randomized_method_name'])
-        self.assertEqual("circle-v10-abcde", c.modules['~circle-v10']['randomized_method_name'])
+        self.assertEqual("arduino_v1_abcde", c.modules['~arduino-v1']['randomized_method_name'])
+        self.assertEqual("circle_v10_abcde", c.modules['~circle-v10']['randomized_method_name'])
         
     def test_replacing_orginal_module_name(self):
         module = Compiler().replace_modulename("new_mod_name", "old_mod_name", "module old_mod_name(abc = 13) { }")
@@ -96,16 +96,16 @@ class CompilerTests(unittest.TestCase):
     @patch('seamlessclient.compiler.Compiler.generate_five_random_chars')
     def test_randomize_module_name(self, generate_five_random_chars_mock):
         generate_five_random_chars_mock.return_value = "abcde"
-        self.assertEqual("circle-v1-abcde", Compiler().randomize_module_name("circle-v1"))
+        self.assertEqual("circle-v1_abcde", Compiler().randomize_module_name("circle-v1"))
         
     @patch('seamlessclient.compiler.Compiler.generate_five_random_chars')
     @patch('seamlessclient.compiler.get_by_uniquename')
-    def test_compiler_inserts_functions_to_end_of_file_and_strips_tilde(self, get_by_uniquename_mock, random_mock):
+    def test_compiler_inserts_functions_to_end_of_file_and_strips_tilde_and_removes_hyphen(self, get_by_uniquename_mock, random_mock):
         get_by_uniquename_mock.side_effect = [server_answer_circle, server_answer_arduino]
         random_mock.return_value = "abcde"
         result = Compiler().compile(test_input)
-        self.assertIn("module arduino-v1-abcde(screws)", result)
-        self.assertIn("module circle-v10-abcde(", result)
+        self.assertIn("module arduino_v1_abcde(screws)", result)
+        self.assertIn("module circle_v10_abcde(", result)
         
     @patch('seamlessclient.compiler.Compiler.generate_five_random_chars')
     @patch('seamlessclient.compiler.get_by_uniquename')
@@ -113,9 +113,9 @@ class CompilerTests(unittest.TestCase):
         get_by_uniquename_mock.side_effect = [server_answer_circle, server_answer_arduino]
         random_mock.return_value = "abcde"
         result = Compiler().compile(test_input)
-        self.assertIn("circle-v10-abcde();", result)
-        self.assertIn("arduino-v1-abcde (screws=false);", result)
-        self.assertIn("arduino-v1-abcde(screws=true);", result)
+        self.assertIn("circle_v10_abcde();", result)
+        self.assertIn("arduino_v1_abcde (screws=false);", result)
+        self.assertIn("arduino_v1_abcde(screws=true);", result)
         
         
         
