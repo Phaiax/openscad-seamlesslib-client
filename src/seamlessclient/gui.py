@@ -12,7 +12,7 @@ class GUI(object):
         self.make_window()
 
     def make_window(self):
-        self.frame = CompilerMainFrame(None, "Hello World")
+        self.frame = CompilerMainFrame(None, "Seamless Compiler For OpenSCAD")
 
     def run(self):
         self.app.MainLoop()
