@@ -60,6 +60,9 @@ class MainLoop(object):
             open(filename, "a").close()
         return open(filename, "w")
     
+    def is_running(self):
+        return self.w is not None or self.compiler_thread is not None
+    
     def start_watch(self, base_path):
         if self.w is not None:
             self.stop_watch()
@@ -72,6 +75,7 @@ class MainLoop(object):
     def stop_watch(self):
         if self.w is not None:
             self.w.stop()
+            self.w = None
             print "Watcher stopped    ",
         try:
             while True:
@@ -85,6 +89,7 @@ class MainLoop(object):
             print "Queue joined    ",
             self.compiler_thread.join(3)
             print "Compiler Thread joined    ",
+            self.compiler_thread = None
         print 
         
     def get_checksum(self, scadfile):

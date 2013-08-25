@@ -47,6 +47,13 @@ class Config(object):
             return self.config[name]
         return default
     
+    
+    def get_watch_folder(self):
+        return self.get('watch_folder', '')
+    
+    def set_watch_folder(self, watch_folder):
+        self.save('watch_folder', watch_folder)
+    
     def get_server(self):
         return self.get('server', default_servers[0])
     
