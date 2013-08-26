@@ -7,12 +7,14 @@ import sys
 import wx
 
 class GUI(object):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, queue):
         self.app = wx.App(False)
+        self.queue = queue
         self.make_window()
 
     def make_window(self):
-        self.frame = CompilerMainFrame(None, "Seamless Compiler For OpenSCAD")
+        self.frame = CompilerMainFrame(None, "Seamless Compiler For OpenSCAD", self.queue)
+        
 
     def run(self):
         self.app.MainLoop()
@@ -22,10 +24,10 @@ class GUI(object):
 # wxFrame = Window, wxWindow = Base class for Buttons etc
 class CompilerMainFrame(wx.Frame):
     """ We simply derive a new class of Frame. """
-    def __init__(self, parent, title):
+    def __init__(self, parent, title, queue):
         wx.Frame.__init__(self, parent, title=title, size=(-1,-1))
         
-        self.queue = Queue.Queue()
+        self.queue = queue
         self.timer_update_intervall = 100
 
         self.text_choose_server = wx.StaticText(self,label="Select server")
@@ -137,10 +139,10 @@ class StdoutCatcher(object):
         self.queue.put(text)
 
 def run():
-    G = GUI()
-    catcher = StdoutCatcher(G.frame.queue)
+    catcher = StdoutCatcher(Queue.Queue())
     sys.stdout_bu = sys.stdout
     sys.stdout = catcher
+    G = GUI(catcher.queue)
     G.run()
 
 def restore_stdout():
