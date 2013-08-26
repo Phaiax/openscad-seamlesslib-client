@@ -2,6 +2,7 @@
 
 *~
 *.spec
+*.zip
 
 # C extensions
 *.so
