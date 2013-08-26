@@ -47,7 +47,8 @@ Python programm which pre-compiles .scad files, so that they can use modules onl
  * go to the openscad-seamlesslib-client folder:
   * cd ..
  * start package generation:
-  * python C:\Users\<<<your user folder>>>\Desktop\pyinstaller-2.0\pyinstaller-2.0\pyinstaller.py --buildpath=dist src\seamless_compiler.py
+  * python C:\Users\<<<your user folder>>>\Desktop\pyinstaller-2.0\pyinstaller-2.0\pyinstaller.py --buildpath=dist -y src\seamless_compiler_gui.py
+  * if you execute this multiple times, make shure that no programm uses the dist path while running that command
  * if all is done correctly, you now have a distributable folder: openscad-seamlesslib-client\dist\seamless_compiler
  * This folder contains a stand-alone executable: No need to install python or anything we have done above. Just this folder is enought.
  * The folder contains an executable named seamless_compiler.exe. Currently it's only a commandline application. You need to start it via commandline with the folder you want to watch as parameter.
