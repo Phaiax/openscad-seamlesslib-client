@@ -1,8 +1,9 @@
 from seamlessclient import mainloop
-import argparse
-import time
+from seamlessclient.exceptions import DisplayMessageToUserException
 from seamlessclient.version import UnsupportedVersion
+import argparse
 import sys as _sys
+import time
 
 
 parser = argparse.ArgumentParser(description="""Precompile openscad files that are using calls to online functions""")
@@ -17,7 +18,7 @@ def run(args, block_thread = False):
     if args.path is not None and args.path != "":
         try:
             mainloop.instance.start_watch(args.path)
-        except UnsupportedVersion, e:
+        except DisplayMessageToUserException, e:
             print e.msg
             _sys.exit()
         if block_thread:

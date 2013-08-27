@@ -1,11 +1,12 @@
 
 from seamlessclient import mainloop
 from seamlessclient.config import Config
+from seamlessclient.exceptions import DisplayMessageToUserException
+from seamlessclient.version import UnsupportedVersion
 import Queue
 import os.path
 import sys
 import wx
-from seamlessclient.version import UnsupportedVersion
 
 class GUI(object):
     def __init__(self, queue):
@@ -134,7 +135,7 @@ class CompilerMainFrame(wx.Frame):
         if os.path.isdir(folder):
             try:
                 mainloop.instance.start_watch(folder)
-            except UnsupportedVersion, e:
+            except DisplayMessageToUserException, e:
                 self.show_message(message=e.msg)
         else:
             self.show_message(message="Please select folder")

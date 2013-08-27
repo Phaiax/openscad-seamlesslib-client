@@ -3,7 +3,7 @@ from seamlessclient import get_client_version
 from seamlessclient.config import Config
 from seamlessclient.version import get_server_version_info, \
     is_this_client_supported, is_most_recent_version, server_version_cache, \
-    UnsupportedVersion, raise_if_unsupported
+    UnsupportedVersion, raise_if_unsupported, WrongServer
 from seamlessclient.webfetch import run_server_request
 import unittest
 
@@ -64,3 +64,9 @@ class VersioningTests(unittest.TestCase):
         self.assertTrue(is_most_recent_version())
         self.assertTrue(is_most_recent_version())
     
+    @patch('seamlessclient.webfetch.Config')
+    def test_raises_if_wrong_server(self, config):
+        config().get_server.return_value = "google.de"
+        server_version_cache.clear()
+        self.assertRaises(WrongServer, raise_if_unsupported)
+        

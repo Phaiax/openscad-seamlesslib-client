@@ -1,5 +1,6 @@
-from seamlessclient.webfetch import run_server_request
 from seamlessclient import get_client_version
+from seamlessclient.exceptions import DisplayMessageToUserException
+from seamlessclient.webfetch import run_server_request, NotFound
 
 not_up_to_date_message = """The Seamless Compiler is not up to date. \n
 Current version: %d, Most recent version: %d\n
@@ -13,7 +14,10 @@ server_version_cache = {}
 
 def get_server_version_info():
     if len(server_version_cache) == 0:
-        server_version_cache.update(run_server_request('version-info'))
+        try:
+            server_version_cache.update(run_server_request('version-info'))
+        except NotFound:
+            raise WrongServer("Server found, but we do not speak the same language. Is the server a seamless server?")
     return server_version_cache
 
 def is_this_client_supported():
@@ -37,6 +41,11 @@ def is_most_recent_version():
     client_version = get_client_version()
     return client_version >= server_info['most_recent_client_version']
 
-class UnsupportedVersion(Exception):
-    def __init__(self, msg):
-        self.msg = msg
+
+
+
+class WrongServer(DisplayMessageToUserException):
+    pass
+
+class UnsupportedVersion(DisplayMessageToUserException):
+    pass
