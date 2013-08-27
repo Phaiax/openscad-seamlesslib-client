@@ -7,7 +7,7 @@ config_files = {'Linux' : "$HOME/.config/seamless-compiler.config",
                 'Windows' : "%APPDATA%\\seamless-compiler.config",
                 'Darwin' : "$HOME/.config/seamless-compiler.config" }
 
-default_servers = ['localhost:8000']
+default_servers = ['seamless.invisibletower.de']
 
 compiled_filename_extension = ".compiled.scad"
 scad_extension = ".scad"

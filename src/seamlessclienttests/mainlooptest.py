@@ -73,7 +73,7 @@ class MainLoopTests(unittest.TestCase):
 
         self.assertTrue(watcher().start.called)
         self.assertTrue(watcher().set_handler.called)
-        self.assertTrue(mainloop.instance.w.start.called)
+        self.assertTrue(mainloop.instance.w.start.called)  # @UndefinedVariable
         
         handler = watcher().set_handler.call_args[0][0]
         self.assertEqual(handler, mainloop.file_changed_handler)

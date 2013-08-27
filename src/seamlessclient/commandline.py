@@ -7,8 +7,8 @@ parser = argparse.ArgumentParser(description="""Precompile openscad files that a
 
 parser.add_argument('path', help="This folder is watched for changes")
 
-parser.add_argument('-s', '--servers', help="Display the server list, from which the sourcecode is required",
-                    action='store_true')
+#parser.add_argument('-s', '--servers', help="Display the server list, from which the sourcecode is required",
+#                    action='store_true')
 
 def run(args, block_thread = False):
     args = parser.parse_args(args)

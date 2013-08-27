@@ -35,7 +35,7 @@ class MainLoop(object):
             print error
         for module in c.modules.values():
             url = make_user_url(Config().get_server(), module['guid'])
-            print "%s: %s (%s) %s" % (module['uniquename'], module['title'], module['description'], url)
+            print "%s: \n         %s \n         %s" % (module['uniquename'], module['title'], url)
         
     def start_compiler_runner(self):
         def compiler_runner():
@@ -70,27 +70,24 @@ class MainLoop(object):
         self.w.set_handler(file_changed_handler)
         self.w.start()
         self.start_compiler_runner()
-        print "Started to watch %s" % base_path
+        print "#### Started to watch %s" % base_path
         
     def stop_watch(self):
         if self.w is not None:
             self.w.stop()
             self.w = None
-            print "Watcher stopped    ",
         try:
             while True:
                 self.queue.get_nowait()
                 self.queue.task_done()
         except:
-            print "Queue emptied    ",
+            pass
         if self.compiler_thread is not None:
             self.compiler_thread_request_stop = True
             # self.queue.join()
-            print "Queue joined    ",
             self.compiler_thread.join(3)
-            print "Compiler Thread joined    ",
             self.compiler_thread = None
-        print 
+        print "Stopped."
         
     def get_checksum(self, scadfile):
         afile = open(scadfile, "r")
@@ -116,7 +113,7 @@ class MainLoop(object):
 
 def file_changed_handler(scadfile, compiled_file_exists):
     if instance.should_compile(scadfile, compiled_file_exists):
-        print "\n ## Change detected: %s" % scadfile,
+        print "\n#### Change detected: %s" % scadfile,
         instance.queue.put([scadfile, compiled_file_exists])
         print " -> compile"
     else:

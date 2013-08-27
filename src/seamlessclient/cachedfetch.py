@@ -8,5 +8,6 @@ def get_by_uniquename(uniquename):
         return Config().get_module(uniquename)
     except:
         mod = webfetch.get_by_uniquename(uniquename)
-        Config().save_module(uniquename, mod)
+        if mod['finished'] is True:
+            Config().save_module(uniquename, mod)
         return mod

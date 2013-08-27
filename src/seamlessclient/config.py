@@ -30,7 +30,7 @@ class Config(object):
     
     def writeConfig(self):
         cfile = self.getFile(mode="w+")
-        simplejson.dump(self.config, cfile, encoding="UTF-8")
+        simplejson.dump(self.config, cfile, encoding="UTF-8", indent="  ")
         cfile.close()
     
     def __init__(self):
