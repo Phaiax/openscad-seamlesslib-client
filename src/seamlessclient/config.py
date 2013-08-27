@@ -58,6 +58,8 @@ class Config(object):
         return self.get('server', default_servers[0])
     
     def set_server(self, server):
+        from seamlessclient.version import server_version_cache
+        server_version_cache.clear()
         self.save('server', server)
         
     def save_module(self, name, module_dict, trigger_write=True):

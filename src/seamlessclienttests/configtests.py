@@ -1,6 +1,6 @@
-import unittest
 from seamlessclient.config import Config
 import seamlessclient
+import unittest
 
 class ConfigTests(unittest.TestCase):
     def test_can_save_value(self):
@@ -20,8 +20,11 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(Config().get_server(), seamlessclient.default_servers[0])
         
     def test_can_set_server(self):
+        from seamlessclient.version import server_version_cache
+        server_version_cache.update({'23': '234'})
         Config().clear()
         Config().set_server("test.de")
+        self.assertEqual({}, server_version_cache)
         self.assertEqual(Config().get_server(), "test.de")
         
     def test_can_store_module_dict(self):
