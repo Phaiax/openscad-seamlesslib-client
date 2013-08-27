@@ -1,8 +1,9 @@
-from seamlessclient import compiled_filename_extension, scad_extension, test_path, \
-    mainloop
+from mock import patch
+from seamlessclient import compiled_filename_extension, scad_extension, \
+    test_path, mainloop
 from seamlessclient.compiler import Compiler
 from seamlessclient.filenames import get_filename_for_compiled_file
-from mock import patch
+from seamlessclient.version import UnsupportedVersion
 from seamlessclienttests.compilertests import test_input, server_answer_arduino, \
     server_answer_circle
 import os
@@ -93,6 +94,10 @@ class MainLoopTests(unittest.TestCase):
 
         self.assertTrue(w.stop.called)
         
+    @patch('seamlessclient.version.get_client_version')
+    def test_start_failes_if_client_not_compatible(self, get_client_version):
+        get_client_version.return_value = 1
+        self.assertRaises(UnsupportedVersion, mainloop.instance.start_watch, '/abcdefghi/jklmno')
         
     def test_start_compiler_runner_only_starts_thread_if_no_older_thread_is_running(self):
         mainloop.instance.compiler_thread_is_running = True

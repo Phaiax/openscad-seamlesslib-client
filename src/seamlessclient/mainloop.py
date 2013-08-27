@@ -4,10 +4,12 @@ from seamlessclient.config import Config
 from seamlessclient.filenames import get_filename_for_compiled_file
 from seamlessclient.filesystemwatcher import Watcher
 from seamlessclient.webfetch import make_user_url
+from seamlessclient import get_client_version 
 import Queue
 import hashlib
 import os
 import threading
+from seamlessclient.version import raise_if_unsupported
 
 instance = None
 
@@ -64,6 +66,7 @@ class MainLoop(object):
         return self.w is not None or self.compiler_thread is not None
     
     def start_watch(self, base_path):
+        raise_if_unsupported()
         if self.w is not None:
             self.stop_watch()
         self.w = Watcher(base_path)

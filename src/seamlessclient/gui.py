@@ -5,6 +5,7 @@ import Queue
 import os.path
 import sys
 import wx
+from seamlessclient.version import UnsupportedVersion
 
 class GUI(object):
     def __init__(self, queue):
@@ -25,21 +26,21 @@ class GUI(object):
 class CompilerMainFrame(wx.Frame):
     """ We simply derive a new class of Frame. """
     def __init__(self, parent, title, queue):
-        wx.Frame.__init__(self, parent, title=title, size=(-1,-1))
+        wx.Frame.__init__(self, parent, title=title, size=(-1, -1))
         
         self.queue = queue
         self.timer_update_intervall = 100
 
         self.Wsizer_select_folder = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.Wtext_choose_folder = wx.StaticText(self,label="Select Folder to scan for .scad files", style=wx.ALIGN_CENTER)
+        self.Wtext_choose_folder = wx.StaticText(self, label="Select Folder to scan for .scad files", style=wx.ALIGN_CENTER)
         self.Wselected_folder = wx.TextCtrl(self, 2)
         self.Wselected_folder.SetEditable(False)
         self.Wselected_folder.SetValue(Config().get_watch_folder())
         self.Wchoose_folder_button = wx.Button(self, -1, "Choose Folder")
         self.Bind(wx.EVT_BUTTON, self.on_choose_watch_folder, self.Wchoose_folder_button)
         
-        self.Wsizer_select_folder.Add(self.Wtext_choose_folder, 0, wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, 6)
+        self.Wsizer_select_folder.Add(self.Wtext_choose_folder, 0, wx.EXPAND | wx.TOP | wx.LEFT | wx.RIGHT, 6)
         self.Wsizer_select_folder.Add(self.Wselected_folder, 4, wx.EXPAND)
         self.Wsizer_select_folder.Add(self.Wchoose_folder_button, 1, wx.EXPAND)
         
@@ -50,7 +51,7 @@ class CompilerMainFrame(wx.Frame):
         self.Wstop_button = wx.Button(self, -1, "Stop")
         self.Bind(wx.EVT_BUTTON, self.on_stop, self.Wstop_button)
 
-        self.Wsizer_actions.Add(self.Wtext_current_status, 7, wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, 6)
+        self.Wsizer_actions.Add(self.Wtext_current_status, 7, wx.EXPAND | wx.TOP | wx.LEFT | wx.RIGHT, 6)
         self.Wsizer_actions.Add(self.Wstart_button, 1, wx.EXPAND)
         self.Wsizer_actions.Add(self.Wstop_button, 1, wx.EXPAND)
 
@@ -71,7 +72,7 @@ class CompilerMainFrame(wx.Frame):
 
         self.Bind(wx.EVT_CLOSE, self.on_close)
         
-        #Layout sizers
+        # Layout sizers
         self.SetSizer(self.Wsizer)
         self.SetAutoLayout(1)
         self.Wsizer.Fit(self)
@@ -87,16 +88,16 @@ class CompilerMainFrame(wx.Frame):
         self.Wmenu_pref = wx.Menu()
         
         # wx.ID_ABOUT and wx.ID_EXIT are standard IDs provided by wxWidgets.
-        self.Wmenu_pref_server = self.Wmenu_pref.Append(wx.ID_SETUP, "&Server","Select Server")
+        self.Wmenu_pref_server = self.Wmenu_pref.Append(wx.ID_SETUP, "&Server", "Select Server")
         
-        #self.servermenu.Append(wx.ID_ABOUT, "&About"," Information about this program")
-        #self.menu_pref.AppendSeparator()
+        # self.servermenu.Append(wx.ID_ABOUT, "&About"," Information about this program")
+        # self.menu_pref.AppendSeparator()
         self.Bind(wx.EVT_MENU, self.on_menu_pref_server, self.Wmenu_pref_server)
-        #self.servermenu.Append(wx.ID_EXIT,"E&xit"," Terminate the program")
+        # self.servermenu.Append(wx.ID_EXIT,"E&xit"," Terminate the program")
         
         # Creating the menubar.
         self.Wmenu_bar = wx.MenuBar()
-        self.Wmenu_bar.Append(self.Wmenu_pref,"&Preferences") # Adding the "filemenu" to the MenuBar
+        self.Wmenu_bar.Append(self.Wmenu_pref, "&Preferences")  # Adding the "filemenu" to the MenuBar
         self.SetMenuBar(self.Wmenu_bar)
     def on_menu_pref_server(self, e):
         pref_server_dialog = wx.TextEntryDialog(self, "Select server (url without http)", "Select server", Config().get_server())
@@ -114,10 +115,10 @@ class CompilerMainFrame(wx.Frame):
         self.Wtimer.Start(self.timer_update_intervall)
         
     
-    def on_choose_watch_folder(self,e):
+    def on_choose_watch_folder(self, e):
         """ Open a file"""
         folder = Config().get_watch_folder()
-        dlg = wx.DirDialog(self, "Choose a folder", folder, style=wx.DD_DIR_MUST_EXIST|wx.DD_NEW_DIR_BUTTON)
+        dlg = wx.DirDialog(self, "Choose a folder", folder, style=wx.DD_DIR_MUST_EXIST | wx.DD_NEW_DIR_BUTTON)
         if dlg.ShowModal() == wx.ID_OK:
             folder = dlg.GetPath()
             Config().set_watch_folder(folder)
@@ -131,8 +132,18 @@ class CompilerMainFrame(wx.Frame):
     def on_start(self, e):
         folder = Config().get_watch_folder()
         if os.path.isdir(folder):
-            mainloop.instance.start_watch(folder)
+            try:
+                mainloop.instance.start_watch(folder)
+            except UnsupportedVersion, e:
+                self.show_message(message=e.msg)
+        else:
+            self.show_message(message="Please select folder")
         self.update_status()
+        
+    def show_message(self, message, title="Seamless Compiler"):
+        message_dialog = wx.MessageDialog(self, message, title, wx.OK)
+        message_dialog.ShowModal()
+        message_dialog.Destroy()
         
     def on_close(self, e):
         restore_stdout()

@@ -6,3 +6,4 @@ from fetchtests import *
 from filenamestest import *
 from folderwatchertest import *
 from mainlooptest import *
+from versioningtests import *

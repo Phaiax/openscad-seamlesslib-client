@@ -1,5 +1,5 @@
-import platform
 import os
+import platform
 
 app_name = "openscad-seamless-compiler"
 
@@ -8,6 +8,10 @@ config_files = {'Linux' : "$HOME/.config/seamless-compiler.config",
                 'Darwin' : "$HOME/.config/seamless-compiler.config" }
 
 default_servers = ['seamless.invisibletower.de']
+#default_servers = ['localhost:8000']
+
+def get_client_version():
+    return 2
 
 compiled_filename_extension = ".compiled.scad"
 scad_extension = ".scad"

@@ -15,15 +15,22 @@ def make_correct_host(host):
 
 
 def make_url(host, function, parameter):
-    return make_correct_host(host) + "api/" + function + "/" + parameter + "/"
+    if parameter is not None:
+        return make_correct_host(host) + "api/" + function + "/" + parameter + "/"
+    else:
+        return make_correct_host(host) + "api/" + function + "/"
+
 
 def make_user_url(host, uuid):
     return make_correct_host(host) + "show/" + uuid + "/"
 
 
 def get_by_uniquename(uniquename):
+    return run_server_request("get-by-uniquename", uniquename)
+    
+def run_server_request(function, parameter = None):
     try:
-        url = make_url(Config().get_server(), "get-by-uniquename", uniquename)
+        url = make_url(Config().get_server(), function, parameter)
         response = urllib2.urlopen(url)
         json = response.read()
         return simplejson.loads(json, encoding="UTF-8")
@@ -38,4 +45,3 @@ def get_by_uniquename(uniquename):
     except:
         print 'Something failed'
         raise NotFound()
-    
